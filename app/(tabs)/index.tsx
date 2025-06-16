@@ -1,75 +1,63 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { Link } from 'expo-router';
+import { useState } from 'react';
+import { FlatList, Image, Pressable, Text, TextInput, View } from 'react-native';
+import tw from 'twrnc';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const fetchProperties = async () => {
+  const res = await axios.get('http://192.168.29.101:3000/properties');
+  return res.data;
+};
 
-export default function HomeScreen() {
+export default function Home() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['properties'],
+    queryFn: fetchProperties,
+  });
+  const [search, setSearch] = useState('');
+
+  if (isLoading) return <Text style={tw`text-center mt-10`}>Loading...</Text>;
+
+  const filtered = data.filter((p) =>
+    p.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={tw`p-4 mt-10`}>
+      <TextInput
+        style={tw`border border-gray-300 p-2 mb-4 rounded`}
+        placeholder="Search"
+        value={search}
+        onChangeText={setSearch}
+      />
+
+      {filtered.length === 0 ? (
+        <Text style={tw`text-center text-gray-500`}>No results found</Text>
+      ) : (
+        <FlatList
+          data={filtered}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Link href={`/property/${item.id}`} asChild>
+              <Pressable style={tw`mb-4 border border-gray-200 rounded overflow-hidden bg-white shadow`}>
+                <Image
+                  source={{ uri: item.images[0] }}
+                  style={tw`h-48 w-full`}
+                  resizeMode="cover"
+                />
+                <View style={tw`p-2`}>
+                  <Text style={tw`text-lg font-bold`}>{item.title}</Text>
+                  <Text style={tw`text-blue-600 font-semibold`}>${item.price}</Text>
+                  <Text style={tw`text-gray-700`}>
+                    {item.location.address}, {item.location.city}, {item.location.state}
+                  </Text>
+                </View>
+              </Pressable>
+            </Link>
+          )}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      )}
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
