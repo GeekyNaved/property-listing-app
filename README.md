@@ -1,50 +1,95 @@
-# Welcome to your Expo app 👋
+# 📱 Property Listing App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+---
 
-## Get started
+## 🚀 About the App
 
-1. Install dependencies
+This is a **React Native property listing app** built using **Expo + TypeScript**.
 
-   ```bash
-   npm install
-   ```
+✅ Home screen with property list + search bar\
+✅ Property detail screen with map + features\
+✅ Bookings screen\
+✅ Profile screen\
+✅ Book property feature\
+✅ Tab navigation
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## 📡 Backend Setup (JSON Server)
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+1️⃣ Install JSON-server globally:
 
 ```bash
-npm run reset-project
+npm install -g json-server
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2️⃣ Download and save `db.json`:\
+👉 [https://pastebin.com/raw/Sa0LzR3T](https://pastebin.com/raw/Sa0LzR3T)
 
-## Learn more
+3️⃣ Start the server:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+json-server --watch db.json --port 3000
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## ⚙️ App Setup
 
-Join our community of developers creating universal apps.
+1️⃣ Clone the repo:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+git clone https://github.com/GeekyNaved/property-listing-app
+cd property-listing-app
+```
+
+2️⃣ Install dependencies:
+
+```bash
+npm install
+```
+
+3️⃣ Start Expo:
+
+```bash
+npx expo start
+```
+
+4️⃣ Use your own IP by opening command promt and write ipconfig use ipv4 and go to utils/api.ts and change base url with your own IP
+
+``` bash
+ipconfig
+```
+5️⃣ Run on emulator / device via Expo Go app / dev tools.
+
+⚠️ API URL should point to:
+
+```bash
+http://192.168.x.x:3000 (Real device)
+http://10.0.2.2:3000 (Android emulator)
+http://localhost:3000 (web)
+```
+
+---
+
+## 📲 Build APK (Optional)
+
+1️⃣ Run:
+
+```bash
+npx expo export --platform android
+```
+
+Or use EAS Build:
+
+```bash
+npx expo install expo-dev-client
+npx eas build -p android
+```
+
+---
+
+## 📹 Video Walkthrough
+
+🎥 [Watch the video](https://www.loom.com/) *(Replace with your Loom link)*
+
