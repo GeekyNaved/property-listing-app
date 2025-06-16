@@ -89,7 +89,3 @@ npx eas build -p android
 
 ---
 
-## 📹 Video Walkthrough
-
-🎥 [Watch the video](https://www.loom.com/) *(Replace with your Loom link)*
-
